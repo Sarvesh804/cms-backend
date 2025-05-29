@@ -1,8 +1,11 @@
 import express from "express";
 import db from "./config/db";
+import articleRoute from "./routes/article.route";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+app.use(express.json());
 
 db.one('SELECT NOW()')
     .then((result)=>{
@@ -16,6 +19,8 @@ db.one('SELECT NOW()')
 app.get('/health',(req,res)=> {
     res.status(200).json({status: "OK"});
 })
+
+app.use('/api',articleRoute);
 
 app.listen(PORT,()=>{
     console.log(`Server is runnig on port ${PORT}`);
