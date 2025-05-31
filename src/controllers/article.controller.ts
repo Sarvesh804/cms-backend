@@ -32,6 +32,7 @@ export const getArticleById = async (
   next: NextFunction
 ) => {
   const articleId = parseInt(req.params.id);
+  const userId = req.user?.id;
   if (isNaN(articleId)) {
     res.status(400).json({
       error: "Invalid article ID",
@@ -39,13 +40,14 @@ export const getArticleById = async (
   }
 
   try {
-    const article = await articleModel.getById(articleId);
+    const article = await articleModel.getById(articleId, userId);
     if (!article) {
       res.status(404).json({
         error: "Article not found",
       });
     }
     res.status(200).json({ data: article });
+    next();
   } catch (error) {
     res.status(500).json({
       error: `Failed to fetch article with id: ${articleId}`,

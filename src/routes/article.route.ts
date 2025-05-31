@@ -6,10 +6,10 @@ import { recordRecentView } from '../middleware/recentView.middleware';
 const articleRoute = express.Router();
 
 articleRoute.get('/articles', authenticate, getAllArticles);
-articleRoute.get('/articles/:id', authenticate,recordRecentView, getArticleById);
+articleRoute.get('/articles/:id', authenticate, getArticleById, recordRecentView );
 articleRoute.post('/articles', authenticate, createArticle);
 articleRoute.put('/articles/:id', authenticate, updateArticle);
 articleRoute.delete('/articles/:id', authenticate, deleteArticle);
-articleRoute.get('/recently-viwed',authenticate, getRecentlyViewed)
+articleRoute.get('/recently-viewed',authenticate, getRecentlyViewed)
 
 export default articleRoute;

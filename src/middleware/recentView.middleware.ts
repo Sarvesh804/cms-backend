@@ -6,7 +6,7 @@ export const recordRecentView = async (
   res: Response,
   next: NextFunction
 ) => {
-  const userId = req.user?.id; // From auth middleware
+  const userId = req.user?.id; 
   const articleId = parseInt(req.params.id);
 
   if (userId && articleId) {

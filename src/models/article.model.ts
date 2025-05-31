@@ -12,8 +12,8 @@ const getAllByUser = async (userId: number): Promise<Article[]> => {
   return await db.any("SELECT * FROM articles WHERE user_id = $1", [userId]);
 };
 
-const getById = async (id: number): Promise<Article> => {
-  return await db.one("SELECT * FROM articles WHERE id = $1", [id]);
+const getById = async (id: number, userId: number): Promise<Article> => {
+  return await db.one("SELECT * FROM articles WHERE id = $1 AND user_id = $2", [id,userId]);
 };
 
 const create = async (

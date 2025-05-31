@@ -17,9 +17,14 @@ const addView = (userId: number, articleId: number): void => {
   if (views.length > 5) {
     views.pop();
   }
+
+  console.log(`User ${userId} viewed article ${articleId}`);
+  console.log("Current store:", JSON.stringify(recentViewsStore));
 };
 
 const getRecent = (userId: number): number[] => {
+  console.log("Fetching for user:", userId);
+  console.log("Store contents:", JSON.stringify(recentViewsStore));
   return recentViewsStore[userId] || [];
 };
 
