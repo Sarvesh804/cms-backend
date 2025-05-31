@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import articleModel from "../models/article.model";
+import recentViews from "../utils/recentViews";
 
 // GET all articles (GET /api/articles)
 export const getAllArticles = async (
@@ -9,11 +10,12 @@ export const getAllArticles = async (
 ) => {
   const page = parseInt(req.query.page as string) || 1;
   const limit = parseInt(req.query.limit as string) || 10;
+  const userId = req.user?.id;
 
   try {
     const [totle, data] = await Promise.all([
-      articleModel.getTotalCount(),
-      articleModel.getPaginated(page, limit),
+        articleModel.getTotalCountByUser(userId),
+        articleModel.getPaginatedByUser(userId, page, limit),
     ]);
     res.status(200).json({ data, totle, page, limit });
   } catch (error) {
@@ -54,13 +56,15 @@ export const getArticleById = async (
 // POST create new article (POST /api/articles)
 export const createArticle = async (req: Request, res: Response) => {
   const { title, content } = req.body;
+  const userId = req.user?.id;
+
   if (!title || !content) {
     res.status(400).json({
       error: "Title and content are required",
     });
   }
   try {
-    const newArticle = await articleModel.create(title, content);
+    const newArticle = await articleModel.create(userId, title, content);
     res.status(201).json({ data: newArticle });
   } catch (error) {
     res.status(500).json({
@@ -104,4 +108,18 @@ export const deleteArticle = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(404).json({ error: "Article not found" });
   }
+};
+
+export const getRecentlyViewed = (req: Request, res: Response) => {
+  const userId = req.user?.id;
+
+  if (!userId) {
+    res.status(401).json({ error: "User not found" });
+  }
+
+  const recentIds = recentViews.getRecent(userId);
+
+  res.status(200).json({
+    data: recentIds,
+  });
 };

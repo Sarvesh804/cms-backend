@@ -8,18 +8,22 @@ export interface Article {
   updated_at?: Date;
 }
 
-const getAll = async (): Promise<Article[]> => {
-  return await db.any("SELECT * FROM articles");
+const getAllByUser = async (userId: number): Promise<Article[]> => {
+  return await db.any("SELECT * FROM articles WHERE user_id = $1", [userId]);
 };
 
 const getById = async (id: number): Promise<Article> => {
   return await db.one("SELECT * FROM articles WHERE id = $1", [id]);
 };
 
-const create = async (title: string, content: string): Promise<Article> => {
+const create = async (
+  userId: number,
+  title: string,
+  content: string
+): Promise<Article> => {
   return await db.one(
-    "INSERT INTO articles (title, content) VALUES ($1, $2) RETURNING *",
-    [title, content]
+    "INSERT INTO articles(title, content, user_id) VALUES($1, $2, $3) RETURNING *",
+    [title, content, userId]
   );
 };
 
@@ -38,28 +42,32 @@ const remove = async (id: number): Promise<void> => {
   await db.none("DELETE FROM articles WHERE id = $1", [id]);
 };
 
-const getTotalCount = async (): Promise<number> => {
-  const result = await db.one("SELECT COUNT(*) FROM articles");
+const getTotalCountByUser = async (userId: number): Promise<number> => {
+  const result = await db.one(
+    "SELECT COUNT(*) FROM articles WHERE user_id = $1",
+    [userId]
+  );
   return parseInt(result.count);
 };
 
-const getPaginated = async (
+const getPaginatedByUser = async (
+  userId: number,
   page: number,
   limit: number
 ): Promise<Article[]> => {
   const offset = (page - 1) * limit;
   return await db.any(
-    "SELECT * FROM articles ORDER BY id ASC LIMIT $1 OFFSET $2",
-    [limit, offset]
+    "SELECT * FROM articles WHERE user_id = $1 ORDER BY id ASC LIMIT $2 OFFSET $3",
+    [userId, limit, offset]
   );
 };
 
 export default {
-  getAll,
+  getAllByUser,
   getById,
   create,
   update,
   remove,
-  getTotalCount,
-  getPaginated,
+  getTotalCountByUser,
+  getPaginatedByUser,
 };
