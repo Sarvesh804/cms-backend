@@ -1,11 +1,13 @@
 import express from "express";
 import db from "./config/db";
 import articleRoute from "./routes/article.route";
+import authRoutes from "./routes/auth.route";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use(authRoutes)
 
 db.one('SELECT NOW()')
     .then((result)=>{

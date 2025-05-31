@@ -14,6 +14,7 @@
   "type": "commonjs",
   "devDependencies": {
     "@types/express": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.15.24",
     "@types/pg-promise": "^0.0.28",
     "express": "^5.1.0",
@@ -21,7 +22,10 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "dotenv": "^16.5.0",
-    "pg-promise": "^11.13.0"
+    "jsonwebtoken": "^9.0.2",
+    "pg-promise": "^11.13.0",
+    "uuid": "^11.1.0"
   }
 }
