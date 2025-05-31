@@ -15,7 +15,7 @@ beforeAll(async () => {
 describe('Articles API', () => {
   it('should create an article', async () => {
     const res = await request(app)
-      .post('/articles')
+      .post('/api/articles')
       .set('Authorization', `Bearer ${token}`)
       .send({ title: 'Test Title', content: 'Test Content' });
 
@@ -25,7 +25,7 @@ describe('Articles API', () => {
 
   it('should list articles for the user', async () => {
     const res = await request(app)
-      .get('/articles')
+      .get('/api/articles')
       .set('Authorization', `Bearer ${token}`);
 
     expect(res.statusCode).toBe(200);
