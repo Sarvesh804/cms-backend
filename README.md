@@ -35,7 +35,7 @@ Tracks and exposes the "recently viewed" articles per user using only primitives
 ### 1. Clone the repo
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/Sarvesh804/cms-backend.git
 cd cms-backend
 ```
 
@@ -89,7 +89,7 @@ docker-compose up --build
 ```bash
 npm test
 ```
-
+- To view the test results check [this](https://github.com/Sarvesh804/cms-backend/blob/ef8ad4c71b8898adefa682d5671826d55712cfac/__tests__/README.md)
 ---
 
 ## API Endpoints
